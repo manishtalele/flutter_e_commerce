@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_e_commerce/controller/authcontroller.dart';
 import 'package:flutter_e_commerce/theme/textstyle.dart';
@@ -17,6 +18,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  bool obstext = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +71,29 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                     )),
-                InputTextField(
-                  controller: _password,
-                  mylabel: "Password",
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 88,
+                      child: InputTextField(
+                        controller: _password,
+                        obstext: obstext,
+                        mylabel: "Password",
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            obstext = !obstext;
+                          });
+                        },
+                        icon: Icon(
+                          obstext
+                              ? CupertinoIcons.eye_fill
+                              : CupertinoIcons.eye_slash_fill,
+                        ))
+                  ],
                 ),
               ],
             ),

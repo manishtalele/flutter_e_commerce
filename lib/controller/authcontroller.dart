@@ -26,22 +26,19 @@ class Authcontroller {
         );
 
         UserModel user = UserModel(credential.user!.uid, name, email, password);
+        userDetail = user;
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('userLogged', true);
+        await prefs.setString('uid', userDetail!.uid.toString());
+        await prefs.setString('name', userDetail!.name.toString());
+        await prefs.setString('email', userDetail!.email.toString());
+        await prefs.setString('password', userDetail!.password.toString());
         await FirebaseFirestore.instance
             .collection("Users")
             .doc(credential.user!.uid)
             .set(user.toMap())
-            .whenComplete(() async {
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setBool('userLogged', true);
-          await prefs.setString('uid', userDetail!.uid.toString());
-          await prefs.setString('name', userDetail!.name.toString());
-          await prefs.setString('email', userDetail!.email.toString());
-          await prefs.setString('password', userDetail!.password.toString());
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
-        });
-
-        userDetail = user;
+            .whenComplete(() => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const HomeScreen())));
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {

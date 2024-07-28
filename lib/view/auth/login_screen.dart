@@ -16,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  bool obstext = false;
+  bool obstext = true;
 
   @override
   void dispose() {

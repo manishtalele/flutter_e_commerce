@@ -18,7 +18,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  bool obstext = false;
+  bool obstext = true;
 
   @override
   Widget build(BuildContext context) {

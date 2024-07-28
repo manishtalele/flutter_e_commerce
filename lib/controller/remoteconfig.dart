@@ -12,12 +12,5 @@ Future<void> fetchAndActivateRemoteConfig() async {
     ));
     await _remoteConfig.fetchAndActivate();
     showPrice = _remoteConfig.getBool('showDiscountedPrice');
-    if (kDebugMode) {
-      print("checking value $showPrice");
-    }
-  } catch (e) {
-    if (kDebugMode) {
-      print('Error fetching Remote Config: $e');
-    }
-  }
+  } catch (e) {}
 }

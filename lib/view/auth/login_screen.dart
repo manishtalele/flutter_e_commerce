@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_e_commerce/controller/authcontroller.dart';
 import 'package:flutter_e_commerce/theme/textstyle.dart';
@@ -15,6 +16,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+
+  bool obstext = false;
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +49,29 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 20,
               ),
-              InputTextField(
-                controller: _password,
-                mylabel: "Password",
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 88,
+                    child: InputTextField(
+                      controller: _password,
+                      obstext: obstext,
+                      mylabel: "Password",
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          obstext = !obstext;
+                        });
+                      },
+                      icon: Icon(
+                        obstext
+                            ? CupertinoIcons.eye_fill
+                            : CupertinoIcons.eye_slash_fill,
+                      ))
+                ],
               ),
             ],
           ),

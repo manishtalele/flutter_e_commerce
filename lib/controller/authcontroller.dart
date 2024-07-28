@@ -54,9 +54,6 @@ class Authcontroller {
             style: TextStyle(color: Colors.red),
           ),
         ));
-        if (kDebugMode) {
-          print('The account already exists for that email.');
-        }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -67,14 +64,17 @@ class Authcontroller {
           style: TextStyle(color: Colors.red),
         ),
       ));
-      if (kDebugMode) {
-        print(e);
-      }
     }
   }
 
   Login(String email, String password, BuildContext context) async {
     try {
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
       await firebaseFirestore
           .collection("Users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -90,12 +90,6 @@ class Authcontroller {
         await prefs.setString('password', userDetail!.password.toString());
       }).whenComplete(() => Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const HomeScreen())));
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('userLogged', true);
-      await prefs.setString('uid', userDetail!.uid.toString());
-      await prefs.setString('name', userDetail!.name.toString());
-      await prefs.setString('email', userDetail!.email.toString());
-      await prefs.setString('password', userDetail!.password.toString());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -107,9 +101,6 @@ class Authcontroller {
             style: TextStyle(color: Colors.red),
           ),
         ));
-        if (kDebugMode) {
-          print('No user found for that email.');
-        }
       } else if (e.code == 'wrong-password') {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: bgcolor2,
@@ -120,9 +111,6 @@ class Authcontroller {
             style: TextStyle(color: Colors.red),
           ),
         ));
-        if (kDebugMode) {
-          print('Wrong password provided for that user.');
-        }
       }
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: bgcolor2,
